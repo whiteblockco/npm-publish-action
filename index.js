@@ -17,7 +17,8 @@ async function main() {
     getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
 
   const createTagFlag = getEnv("CREATE_TAG") !== "false";
-  
+
+  const buildCommand = getEnv("BUILD_COMMAND") || '';
   const publishCommand = getEnv("PUBLISH_COMMAND") || "yarn";
   const publishArgs = arrayEnv("PUBLISH_ARGS");
 
@@ -29,6 +30,7 @@ async function main() {
     tagName: placeholderEnv("TAG_NAME", "v%s"),
     tagMessage: placeholderEnv("TAG_MESSAGE", "v%s"),
     tagAuthor: { name, email },
+    buildCommand,
     publishCommand,
     publishArgs
   };
@@ -74,6 +76,12 @@ async function processDirectory(dir, config, commits) {
 
   if (config.createTag) {
     await createTag(dir, config, version);  
+  }
+
+  if (config.buildCommand !== '') {
+    const cmd = config.buildCommand.split(" ")[0];
+    const args = config.buildCommand.split(" ").slice(1);
+    await run(dir, cmd, ...args);
   }
   
   await publishPackage(dir, config, version);
