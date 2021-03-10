@@ -79,9 +79,15 @@ async function processDirectory(dir, config, commits) {
     }
 
     if (config.buildCommand !== '') {
-        console.log("Build - " + config.buildCommand);
+        const installCmd = config.publishCommand === "yarn"
+                ? ["yarn"]
+                : config.publishCommand === "npm"
+                ? ["npm", "install"]
+                : [config.publishCommand];
+        await run(dir, ...installCmd);
         const cmd = config.buildCommand.split(" ")[0];
         const args = config.buildCommand.split(" ").slice(1);
+        console.log("Build - " + config.buildCommand);
         await run(dir, cmd, ...args);
     }
 
