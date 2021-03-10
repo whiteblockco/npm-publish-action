@@ -35,7 +35,7 @@ async function main() {
         publishArgs
     };
 
-    await processDirectory(dir, config, eventObj.commits);
+    await processDirectory(dir, config);
 }
 
 function getEnv(name) {
@@ -58,7 +58,7 @@ function arrayEnv(name) {
     return str ? str.split(" ") : [];
 }
 
-async function processDirectory(dir, config, commits) {
+async function processDirectory(dir, config) {
     const packageFile = join(dir, "package.json");
     const packageObj = await readJson(packageFile).catch(() =>
         Promise.reject(
@@ -72,11 +72,11 @@ async function processDirectory(dir, config, commits) {
 
     const {version} = packageObj;
 
-    checkCommit(config, commits, version);
-
-    if (config.createTag) {
-        await createTag(dir, config, version);
-    }
+    // checkCommit(config, commits, version);
+    //
+    // if (config.createTag) {
+    //     await createTag(dir, config, version);
+    // }
 
     if (config.buildCommand !== '') {
         const installCmd = config.publishCommand === "yarn"
