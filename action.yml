@@ -3,6 +3,9 @@ author: pascalgn
 description: Automatically publish new versions to npm
 
 inputs:
+  create_tag:
+    description: The boolean that creating tag
+    required: false
   commit_pattern:
     description: The pattern that matches version update commits.
     required: false
@@ -20,6 +23,9 @@ inputs:
     required: false
   publish_args:
     description: Publish command arguments.
+    required: false
+  build_command:
+    description: Build command
     required: false
 
 runs:

@@ -26,7 +26,7 @@ jobs:
         tag_message: "v%s"
         create_tag: "true"
         commit_pattern: "^Release (\\S+)"
-        workspace: "dist"
+        workspace: "."
         publish_command: "yarn"
         publish_args: "--non-interactive"
         build_command: "yarn build"
